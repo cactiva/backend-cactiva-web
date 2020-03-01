@@ -2,7 +2,7 @@
 const {SignUpResponse} = require('../models/AuthA')
 const axios = require('axios')
 const { Clientdb } = require('../db/db.js')
-const { refPay } = require('./refPay')
+const { refPay } = require('../refPay')
 
 const getSuccess = async (req, res) => {
     

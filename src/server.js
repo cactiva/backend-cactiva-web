@@ -11,9 +11,7 @@ const { validLicense } = require('./validationLicense')
 
 const createRequestId = () => uuid()
 
-const createServer = (options) => {
-    const { logSeverity } = options
-    const server = Fastify({
+const server = Fastify({
         ignoreTrailingSlash:true,
         genReqId: createRequestId,
         logger:{
@@ -54,6 +52,6 @@ const createServer = (options) => {
         }
         server.log.info('Server Started')
     })
-}
+
 
 module.exports = {createServer}
