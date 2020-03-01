@@ -5,7 +5,7 @@ const { validatePostLogin, validatePostSignup } = require('./models/auth')
 const { postLogin, postSignup } = require('./controller/postController')
 const { validateInvoice, postInvoice} = require('./payment/invoices')
 const {getSuccess} = require('./payment/succees')
-//const { validLicense } = require('./validationLicense')
+const { validLicense } = require('./validationLicense')
 const {Clientdb} = require('./db/db')
 // const {checkrowcount} = require('./controller/checkrowcount')
 // const {refPay} = require('./payment/refPay')
@@ -42,7 +42,7 @@ const server = Fastify({
     server.get('/invoice/success/:emailUser', getSuccess)
 
     //Jalanin Cron Job
-    //server.get('/valid',validLicense)
+    server.get('/valid',validLicense)
 
     //tes fun api
     //server.get('/tes/:tes', refPay)
