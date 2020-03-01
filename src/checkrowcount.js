@@ -38,6 +38,7 @@ const checkrowcount = async(id) =>{
             const inputType = await Clientdb.query('Insert into "TypeLicense" ("type", "valuetype") values ($1, $2) returning *', ['Trial','30 days'])
             const idtype = inputType.rows[0].id
             await Clientdb.query('Insert into "License" ("valid_from", "valid_to", "status", "type", "userprofile_id", "typelicense_id", "invoice_id") values ($1, $2, $3, $4, $5, $6, $7)', [ getDateNow, validto.toLocaleDateString(), 'ACTIVE','PRO-TRIAL', id, idtype, ''])
+            updateCT(id)
         }else if (type === 'PRO'){
             validto.setDate(validto.getDate() + 7)
             await Clientdb.query('UPDATE "License" Set "valid_to" = $1 where userprofile_id = $2',[validto.toLocaleDateString(), id])
@@ -48,10 +49,15 @@ const checkrowcount = async(id) =>{
                 const inputType = await Clientdb.query('Insert into "TypeLicense" ("type", "valuetype") values ($1, $2) returning *', ['Trial','30 days'])
                 const idtype = inputType.rows[0].id
                await Clientdb.query('Insert into "License" ("valid_from", "valid_to", "status", "type", "userprofile_id", "typelicense_id", "invoice_id") values ($1, $2, $3, $4, $5, $6, $7)', [ validfrom.toLocaleDateString(), validto.toLocaleDateString(), 'PENDING','PRO-TRIAL', id, idtype, ''])
+               updateCT(id)
             }
         }
     }
 
+ }
+
+ const updateCT = async (id) =>{
+     await Clientdb.query('Update "CreateTime" Set "create_time" = $1 where userprofile_id = $2',['', id])
  }
 
  module.exports = {checkrowcount}

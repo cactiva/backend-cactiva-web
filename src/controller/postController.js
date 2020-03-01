@@ -13,7 +13,7 @@ const postSignup = async (req, res) => {
         
         const existListEmail = exist.rows[0]
 
-        const date_ob = new Date();
+        const date_ob = new Date()
         
         const getDateNow = date_ob.toLocaleDateString()
         date_ob.setDate(date_ob.getDate() + 7)
