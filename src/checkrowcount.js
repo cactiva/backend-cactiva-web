@@ -1,5 +1,4 @@
-const { Clientdb } = require('../db/db.js')
-const axios = require('axios')
+const { Clientdb } = require('./db/db')
 
 const checkrowcount = async(id) =>{
     const userData = await Clientdb.query('SELECT * FROM "License" WHERE userprofile_id = $1',[id])

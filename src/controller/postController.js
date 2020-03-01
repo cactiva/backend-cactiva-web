@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt-nodejs')
 
 const { Clientdb } = require('../db/db')
 const {SignUpResponse} = require('../models/AuthA')
-const {checkrowcount} = require('./checkrowcount')
+const { checkrowcount } = require('../checkrowcount')
 const {INVALID_PASSWORD, USER_DOESNT_EXISTS, USER_EXISTS} = require('../models/Errors')
 
 const postSignup = async (req, res) => {
@@ -34,7 +34,7 @@ const postSignup = async (req, res) => {
         await Clientdb.query('Insert into "CreateTime" ("create_time", "userprofile_id") values ($1, $2)',['', iduser])
         await Clientdb.query('Insert into "License" ("valid_from", "valid_to", "status", "type", "userprofile_id", "typelicense_id", "invoice_id") values ($1, $2, $3, $4, $5, $6, $7)', [ getDateNow, setDateThen, 'ACTIVE','PRO-TRIAL', iduser, idtype, ''])
         if(emailreferal){
-            const checkId = await Clientdb.query('Select id from "UserProfile" where email = $1',[emailreferal])
+            const checkId = await Clientdb.query('Select * from "UserProfile" where email = $1',[emailreferal])
             if(checkId){
              await Clientdb.query('INSERT INTO "Referal" ("userprofile_id", "referal_user_id", "create_at") VALUES ($1, $2, $3)',[parseInt(iduser), parseInt(checkId.rows[0].id), getDateNow])
              checkrowcount(checkId.rows[0].id)
