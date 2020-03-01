@@ -11,15 +11,18 @@ const transporter = nodeMailer.createTransport({
     }
 })
 
-const mailOptions = (email) = {
-    from: 'erlanggadwipratama.if@gmail.com',
-    to: email,
-    subject: "It's from Cactiva!",
-    text: 'Hi, your status is BASIC now!',
+const mailOptions = (email) => {
+    const mail = {
+        from: 'erlanggadwipratama.if@gmail.com',
+        to: email,
+        subject: "It's from Cactiva!",
+        text: 'Hi, your status is BASIC now!',
+    }
+    return mail
 }
 
 const validLicense = async (req,res) =>{
-    cron.schedule("0 0 * * *", function(){
+    cron.schedule("0 0 * * *", async function(){
         const license = await Clientdb('Select * from "License"')
 
         const dateNow = new Date()
@@ -40,7 +43,7 @@ const validLicense = async (req,res) =>{
                         const inputType = await Clientdb.query('Insert into "TypeLicense" ("type", "valuetype") values ($1, $2) returning *', ['BASIC',''])
                         const idtype = inputType.rows[0].id
                         await Clientdb.query('Insert into "License"("valid_from", "valid_to", "status", "type", "userprofile_id", "typelicense_id", "invoice_id") values ($1, $2, $3, $4, $5, $6, $7)', [ dateNow.getDate(), '', 'ACTIVE','BASIC', idUser, idtype, ''])
-                        mailOptions(emailUser)
+                        transporter.sendMail(mailOptions(emailUser))
                     }else if(status === 'PENDING'){
                         await Clientdb.query('UPDATE "License" Set "status" = $1 where id = $2',['ACTIVE', idLicense])
                     }

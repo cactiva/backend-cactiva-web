@@ -41,7 +41,13 @@ const postSignup = async (req, res) => {
             }
         }
         const token = await res.jwtSign({expiresIn: '2d'})
-        res.send(new SignUpResponse({email: email, token}))
+        res.send(new SignUpResponse({email: email, 
+            token, 
+            firstName: firstName, 
+            lastName: lastName, 
+            gender: gender,
+            phone: phone,
+            address: address}))
     }catch(err){
         res.send(err)
     }
@@ -50,16 +56,28 @@ const postSignup = async (req, res) => {
 const postLogin = async (req, res) => {
     const {email, password} = req.body
     try{
-        const user = await Clientdb.query('SELECT email FROM "UserProfile" WHERE email = $1',[email])
+        const user = await Clientdb.query('SELECT * FROM "UserProfile" WHERE email = $1',[email])
         const userPass = await Clientdb.query('SELECT password FROM "UserProfile" WHERE email = $1',[email])
         if(!user.rows[0]){
             res.send(new Error(USER_DOESNT_EXISTS))
         }
         const isMatch = await comparePassword(password, userPass.rows[0].password)
         if(isMatch){
+            const firstName = user.rows[0].firstname
+            const lastName = user.rows[0].lastname
+            const gender = user.rows[0].gender
+            const phone = user.rows[0].phone
+            const address = user.rows[0].address
             //return login sukses
             const token = await res.jwtSign({ expiresIn: '2d'})
-            return res.send(new SignUpResponse({token}))
+            return res.send(new SignUpResponse({
+                email: email,
+                token,
+                firstName: firstName,
+                lastName: lastName,
+                gender: gender,
+                phone: phone,
+                address: address}))
         }
         return res.send(new Error(INVALID_PASSWORD))
     }catch(err){
