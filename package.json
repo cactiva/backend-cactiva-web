@@ -1,0 +1,8 @@
+{
+  "name": "pgnaut",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/cactiva/backend-cactiva-web.git",
+  "author": "erlangga <adikaraerlangga@gmail.com>",
+  "license": "MIT"
+}
