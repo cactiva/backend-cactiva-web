@@ -12,11 +12,18 @@
     "url": "https://github.com/cactiva/backend-cactiva-web/issues"
   },
   "homepage": "https://github.com/cactiva/backend-cactiva-web#readme",
-  "dependencies": {},
+  "dependencies": {
+    "axios": "^0.19.2",
+    "bcrypt-node": "^0.1.0",
+    "bcrypt-nodejs": "^0.0.3",
+    "fastify": "^2.12.1",
+    "fastify-jwt": "^1.2.1",
+    "pg": "^7.18.2"
+  },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"nodemon src/server.js"
+    "start": "nodemon src/server.js"
   },
   "description": ""
 }

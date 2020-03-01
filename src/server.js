@@ -1,15 +1,18 @@
 const Fastify = require('fastify')
 const uuid = require('uuid/v4')
 const jwt = require('fastify-jwt')
-const { validatePostLogin, validatePostSignup } = require('./models/auth')
+const { validatePostLogin, validatePostSignup } = require('./models/AuthA')
 const { postLogin, postSignup } = require('./controller/postController')
 const { validateInvoice, postInvoice} = require('./payment/invoices')
 const {getSuccess} = require('./payment/succees')
 const { validLicense } = require('./validationLicense')
+const {Clientdb} = require('./db/db')
 // const {checkrowcount} = require('./controller/checkrowcount')
 // const {refPay} = require('./payment/refPay')
 
 const createRequestId = () => uuid()
+
+Clientdb.connect();
 
 const server = Fastify({
         ignoreTrailingSlash:true,
@@ -52,6 +55,3 @@ const server = Fastify({
         }
         server.log.info('Server Started')
     })
-
-
-module.exports = {createServer}
