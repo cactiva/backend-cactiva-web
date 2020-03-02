@@ -26,6 +26,10 @@ const server = Fastify({
         secret: "supersecret"
     })
 
+    server.register(require('fastify-cors'),{
+        origin: 'http://localhost:3000'
+    })
+
     //API buat Login POST
     server.post('/auth/login/', validatePostLogin, postLogin)
 
