@@ -1,14 +1,14 @@
 const { Clientdb } = require('../db/db.js')
 const axios = require('axios')
-const {INVALID_PASSWORD, USER_DOESNT_EXISTS} = require('../models/Errors')
-const userPasswordRegex = '^(?=.{6,})'
+const {USER_DOESNT_EXISTS} = require('../models/Errors')
 const timeStamp = Math.floor(Date.now()/1000)
-const bcrypt = require('bcrypt-nodejs')
 
 const postInvoice = async (req, res) => {
     
-    const { email, password } = req.body
+    const { email, pay} = req.body
     const user = await Clientdb.query('SELECT * FROM "UserProfile" WHERE email = $1',[email])
+    const convert = pay * 17000
+    const url = 'http://127.0.0.1:3001/invoice/success/'+email
     
     try{
         
@@ -28,38 +28,21 @@ const postInvoice = async (req, res) => {
                     authorization: 'Basic eG5kX2RldmVsb3BtZW50X1U1eERTaWh5M3o0aHdvaEhmM05zMmlOMHVJd01KWWZ3YUtSZGk5VnlEN1RKTk51NTlkYmdpY2I2ZnVXSGFkOg==',
                 }
             }).then(result =>{
-                return res.send(result.data.invoice_url)
+                if(result.data.status === "PENDING"){
+                    return res.send(result.data.invoice_url)
+                }else if(result.data.status === "SETTLED"){
+                    return res.send("PAID")   
+                }else if(result.data.status === "PAID"){
+                    return res.send("PAID")
+                }else if(result.data.status === "EXPIRED"){
+                    return res.send(createInvoice(timeStamp, email, convert, url))
+                }
+            }).catch(error=>{
+                return res.send(error.result)
             })
         }else{
-            const isMatch = comparePassword(password, pass)
-            if(isMatch){
-
-                await axios({
-                    method: 'POST',
-                    url: 'https://api.xendit.co/v2/invoices',
-                    headers:{ 
-                        'cache-control':'no-status',
-                        'content-type': 'application/json',
-                        authorization: 'Basic eG5kX2RldmVsb3BtZW50X1U1eERTaWh5M3o0aHdvaEhmM05zMmlOMHVJd01KWWZ3YUtSZGk5VnlEN1RKTk51NTlkYmdpY2I2ZnVXSGFkOg==',
-                    },
-                    data:{
-                        external_id: timeStamp.toString(),
-                        amount: 700000,
-                        payer_email: email,
-                        success_redirect_url: 'http://127.0.0.1:3001/invoice/success/'+email,
-                        description: 'Activation Code Payment',
-                    }
-                }).then(async response => {
-                    const idInvoice = response.data.id
-                    await Clientdb.query('UPDATE "UserProfile" Set "invoice_id" = $1 where email = $2',[idInvoice, email])
-                    
-                    return res.send(response.data.invoice_url)
-                }).catch(err => {
-                    return res.send(err.response.data)
-                })
+            return res.send(createInvoice(timeStamp, email, convert, url))
             }
-        }
-            return res.send(new Error(INVALID_PASSWORD))
         }
     
     }catch(err){
@@ -67,27 +50,53 @@ const postInvoice = async (req, res) => {
     }
 }
 
-const comparePassword = (candidatePassword, passwordmore) => {
-    if(bcrypt.compareSync(candidatePassword,passwordmore)){
-        return true
-    }else{
-        return false
-    }
-  }
+const createInvoice = async (timeStamp, email, convert, urls) =>{
+    await axios({
+        method: 'POST',
+        url: 'https://api.xendit.co/v2/invoices',
+        headers:{ 
+            'cache-control':'no-status',
+            'content-type': 'application/json',
+            authorization: 'Basic eG5kX2RldmVsb3BtZW50X1U1eERTaWh5M3o0aHdvaEhmM05zMmlOMHVJd01KWWZ3YUtSZGk5VnlEN1RKTk51NTlkYmdpY2I2ZnVXSGFkOg==',
+        },
+        data:{
+            external_id: timeStamp.toString(),
+            amount: convert,
+            payer_email: email,
+            success_redirect_url: urls,
+            description: 'Activation Code Payment',
+            payment_methods: ["CREDIT_CARD"]
+        }
+    }).then(async response => {
+        const idInvoice = response.data.id
+        await Clientdb.query('UPDATE "UserProfile" Set "invoice_id" = $1 where email = $2',[idInvoice, email])
+        
+        return response.data.invoice_url
+    }).catch(err => {
+        return err.response.data
+    })
+}
+
+// const comparePassword = (candidatePassword, passwordmore) => {
+//     if(bcrypt.compareSync(candidatePassword,passwordmore)){
+//         return true
+//     }else{
+//         return false
+//     }
+//   }
 
 const validateInvoice = {
     schema:{
         body:{
             type: 'object',
             properties:{
-                email: { type: 'string', format: 'email'},
-                password: {type: 'string', format:'regex', pattern: userPasswordRegex},
+                email: { type: 'string', format: 'email'}
             },
-            required: ['email','password']
+            required: ['email']
         }
     }
 }
 
 module.exports = {
-    postInvoice, validateInvoice
+    postInvoice, validateInvoice, createInvoice
 }

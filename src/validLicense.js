@@ -6,14 +6,14 @@ const { Clientdb } = require('./db/db')
 const transporter = nodeMailer.createTransport({
     service: 'gmail',
     auth:{
-        user:'erlanggadwipratama.if@gmail.com',
-        pass: 'capoeirabboy'
+        user:'rizky@cactiva.app',
+        pass: 'Okedeh123'
     }
 })
 
 const mailOptions = (email) => {
     const mail = {
-        from: 'erlanggadwipratama.if@gmail.com',
+        from: 'rizky@caciva.app',
         to: email,
         subject: "It's from Cactiva!",
         text: 'Hi, your status is BASIC now!',

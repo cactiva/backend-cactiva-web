@@ -7,6 +7,9 @@ const { validateInvoice, postInvoice} = require('./payment/invoices')
 const {getSuccess} = require('./payment/succees')
 const { validLicense } = require('./validLicense')
 const {Clientdb} = require('./db/db')
+const {userController} = require("./controller/userController")
+const {getTeamSuccess} = require("./payment/donation/teamsuccess")
+const {getTeamInvoice} = require("./payment/donation/teaminvoice")
 // const {checkrowcount} = require('./controller/checkrowcount')
 // const {refPay} = require('./payment/refPay')
 
@@ -27,7 +30,7 @@ const server = Fastify({
     })
 
     server.register(require('fastify-cors'),{
-        origin: 'http://localhost:3000'
+        origin: '*'
     })
 
     //API buat Login POST
@@ -36,14 +39,15 @@ const server = Fastify({
     //API buat Signup POST
     server.post('/auth/signup/', validatePostSignup, postSignup)
 
-    // //API buat Signup dengan referal POST
-    // server.post('/auth/signup/:emailreferal',validatePostSignup, postSignup)
-
     //API buat invoice Pembayaran POST
     server.post('/invoices/',validateInvoice, postInvoice)
+    server.post('/invoices/teaminvoice/', getTeamInvoice)
+
+    server.post('/checkpayment/', userController)
 
     //API buat Pembayaran sukses GET PARAMs
     server.get('/invoice/success/:emailUser', getSuccess)
+    server.get('/invoice/teamsuccess/:email1/:email2/:email3/:email4/:email5', getTeamSuccess)
 
     //Jalanin Cron Job
     server.get('/valid',validLicense)

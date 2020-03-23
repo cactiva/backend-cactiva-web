@@ -360,6 +360,14 @@ fastfall@^1.5.0:
   dependencies:
     reusify "^1.0.0"
 
+fastify-cors@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/fastify-cors/-/fastify-cors-3.0.2.tgz#38f380512da513ab5ae4b071756a3dfc461cca4a"
+  integrity sha512-emqorS6s4W0+v+ZbTwHUwpmT3R1rCQtIh3K69e+QUxbufkxvweJ5MbFrLTEyolMlOCOGAk8NcnUJBDd1aRceCw==
+  dependencies:
+    fastify-plugin "^1.6.0"
+    vary "^1.1.2"
+
 fastify-jwt@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/fastify-jwt/-/fastify-jwt-1.2.1.tgz#2e2c1c8c2e941a1cf7d45b4b4b607c075485ad81"
@@ -371,7 +379,7 @@ fastify-jwt@^1.2.1:
     jsonwebtoken "^8.3.0"
     steed "^1.1.3"
 
-fastify-plugin@^1.2.0:
+fastify-plugin@^1.2.0, fastify-plugin@^1.6.0:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/fastify-plugin/-/fastify-plugin-1.6.1.tgz#122f5a5eeb630d55c301713145a9d188e6d5dd5b"
   integrity sha512-APBcb27s+MjaBIerFirYmBLatoPCgmHZM6XP0K+nDL9k0yX8NJPWDY1RAC3bh6z+AB5ULS2j31BUfLMT3uaZ4A==
@@ -1299,6 +1307,11 @@ uuid@^7.0.1:
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-7.0.1.tgz#95ed6ff3d8c881cbf85f0f05cc3915ef994818ef"
   integrity sha512-yqjRXZzSJm9Dbl84H2VDHpM3zMjzSJQ+hn6C4zqd5ilW+7P4ZmLEEqwho9LjP+tGuZlF4xrHQXT0h9QZUS/pWA==
+
+vary@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
+  integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
 
 which@^1.2.9:
   version "1.3.1"

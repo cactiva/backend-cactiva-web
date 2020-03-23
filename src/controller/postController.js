@@ -32,7 +32,7 @@ const postSignup = async (req, res) => {
         const idtype = inputType.rows[0].id
 
         await Clientdb.query('Insert into "CreateTime" ("create_time", "userprofile_id") values ($1, $2)',['', iduser])
-        await Clientdb.query('Insert into "License" ("valid_from", "valid_to", "status", "type", "userprofile_id", "typelicense_id", "invoice_id") values ($1, $2, $3, $4, $5, $6, $7)', [ getDateNow, setDateThen, 'ACTIVE','PRO-TRIAL', iduser, idtype, ''])
+        await Clientdb.query('Insert into "License" ("valid_from", "valid_to", "status", "type", "userprofile_id", "typelicense_id", "invoice_id") values ($1, $2, $3, $4, $5, $6, $7)', [ '', '', 'ACTIVE','PRO-TRIAL', iduser, idtype, ''])
         if(emailreferal){
             const checkId = await Clientdb.query('Select * from "UserProfile" where email = $1',[emailreferal])
             if(checkId){
