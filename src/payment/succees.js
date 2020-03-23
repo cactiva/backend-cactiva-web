@@ -67,7 +67,7 @@ const getSuccess = async (req, res) => {
                 if(referal){
                     refPay(getIdUser)
                 }
-                return res.send(new SignUpResponse({email: emailUser}))
+                 return res.send('Team License Payment Success, go to your profile page')
             }else if( statuses === "PENDING"){
                 return res.send('Payment still Pending')
             }
