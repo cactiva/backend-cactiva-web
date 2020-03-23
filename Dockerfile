@@ -13,5 +13,5 @@ ADD . /usr/src/app
 
 RUN yarn
 
-CMD [ "yarn", "dev" ]
+CMD [ "yarn", "start" ]
 EXPOSE 10000
