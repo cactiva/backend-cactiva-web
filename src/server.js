@@ -59,7 +59,7 @@ server.get("/valid", validLicense);
 //server.get('/tes/:tes', refPay)
 
 server.listen(10000, '0.0.0.0', err => {
-  if (err) {
+  if (err){
     server.log.error(err);
     console.log(err);
     process.exit(1);
