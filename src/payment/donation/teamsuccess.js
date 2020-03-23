@@ -1,5 +1,6 @@
 const axios = require('axios')
 const { Clientdb } = require('../../db/db')
+const bcrypt = require('bcrypt-nodejs')
 
 const getTeamSuccess = async (req, res) =>{
     const {email1, email2, email3, email4, email5} = req.params
@@ -74,7 +75,8 @@ const getTeamSuccess = async (req, res) =>{
 }
 
 const insertdatateam = async (email, emailprim, id_referal, inv_id) =>{
-    const inputUser = await Clientdb.query('INSERT INTO "UserProfile" ("firstname", "lastname", "email", "password", "gender", "phone", "address", "invoice_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) returning *',['', '', email, emailprim, '', '', '','0'])
+    const tokenPassword = bcrypt.hashSync(emailprim)
+    const inputUser = await Clientdb.query('INSERT INTO "UserProfile" ("firstname", "lastname", "email", "password", "gender", "phone", "address", "invoice_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) returning *',['', '', email, tokenPassword, '', '', '','0'])
     const iduserteam = inputUser.rows[0].id
     const inputType = await Clientdb.query('Insert into "TypeLicense" ("type", "valuetype") values ($1, $2) returning *', ['PRO','Donation, 1 year'])
     const idtype = inputType.rows[0].id 
