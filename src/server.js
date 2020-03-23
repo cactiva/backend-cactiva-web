@@ -58,7 +58,7 @@ server.get("/valid", validLicense);
 //tes fun api
 //server.get('/tes/:tes', refPay)
 
-server.listen(10000, 0.0.0.0, err => {
+server.listen(10000, '0.0.0.0', err => {
   if (err) {
     server.log.error(err);
     console.log(err);
