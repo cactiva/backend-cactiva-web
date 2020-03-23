@@ -10,7 +10,7 @@ const postInvoice = async (req, res) => {
     [email]
   );
   const convert = pay * 17000;
-  const url = "http://127.0.0.1:10000/invoice/success/" + email;
+  const url = "https://cactiva-web.web.andromedia.co.id/invoice/success/" + email;
 
   try {
     if (!user.rows[0]) {
