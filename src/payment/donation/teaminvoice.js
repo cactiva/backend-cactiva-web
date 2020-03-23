@@ -12,7 +12,7 @@ const getTeamInvoice = async (req, res) => {
   );
   const convert = pay * 17000;
   const url =
-    "http://127.0.0.1:10000/invoice/teamsuccess/" +
+    "https://cactiva-web.web.andromedia.co.id/invoice/teamsuccess/" +
     email1 +
     "/" +
     email2 +
