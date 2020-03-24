@@ -1,7 +1,6 @@
 const axios = require('axios')
 const { Clientdb } = require('../../db/db')
 const bcrypt = require('bcrypt-nodejs')
-
 const getTeamSuccess = async (req, res) =>{
     const {email1, email2, email3, email4, email5} = req.params
 
@@ -63,6 +62,7 @@ const getTeamSuccess = async (req, res) =>{
                 insertdatateam(email3, email1, getIdUser, getInvoiceId)
                 insertdatateam(email4, email1, getIdUser, getInvoiceId)
                 insertdatateam(email5, email1, getIdUser, getInvoiceId)
+                location.href = "https://cactiva.netlify.com/profile/"
                 return res.send('Team License Payment Success, go to your profile page')
             }else if( statuses === "PENDING"){
                 return res.send('Payment still Pending')

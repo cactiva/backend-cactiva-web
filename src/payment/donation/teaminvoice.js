@@ -6,22 +6,9 @@ const timeStamp = Math.floor(Date.now() / 1000);
 const getTeamInvoice = async (req, res) => {
   const { email1, email2, email3, email4, email5, pay } = req.body;
 
-  const user = await Clientdb.query(
-    'SELECT * FROM "UserProfile" WHERE email = $1',
-    [email1]
-  );
-  const convert = pay * 17000;
-  const url =
-    "https://cactiva-web.web.andromedia.co.id/invoice/teamsuccess/" +
-    email1 +
-    "/" +
-    email2 +
-    "/" +
-    email3 +
-    "/" +
-    email4 +
-    "/" +
-    email5;
+    const user = await Clientdb.query('SELECT * FROM "UserProfile" WHERE email = $1',[email1])
+    const convert = pay * 17000
+    const url = 'https://cactiva-web.web.andromedia.co.id/invoice/teamsuccess/'+email1+'/'+email2+'/'+email3+'/'+email4+'/'+email5
 
   try {
     if (!user.rows[0]) {

@@ -1,17 +1,17 @@
-const Fastify = require("fastify");
-const uuid = require("uuid/v4");
-const jwt = require("fastify-jwt");
-const { validatePostLogin, validatePostSignup } = require("./models/auth");
-const { postLogin, postSignup } = require("./controller/postController");
-const { validateInvoice, postInvoice } = require("./payment/invoices");
-const { getSuccess } = require("./payment/succees");
-const { validLicense } = require("./validLicense");
-const { Clientdb } = require("./db/db");
-const { userController } = require("./controller/userController");
-const { getTeamSuccess } = require("./payment/donation/teamsuccess");
-const { getTeamInvoice } = require("./payment/donation/teaminvoice");
-// const {checkrowcount} = require('./controller/checkrowcount')
-// const {refPay} = require('./payment/refPay')
+const Fastify = require('fastify')
+const uuid = require('uuid/v4')
+const jwt = require('fastify-jwt')
+const { validatePostLogin, validatePostSignup } = require('./models/auth')
+const { postLogin, postSignup } = require('./controller/postController')
+const { validateInvoice, postInvoice} = require('./payment/invoices')
+const {getSuccess} = require('./payment/succees')
+const { validLicense } = require('./validLicense')
+const {Clientdb} = require('./db/db')
+const {userController} = require("./controller/userController")
+const {getTeamSuccess} = require("./payment/donation/teamsuccess")
+const {getTeamInvoice} = require("./payment/donation/teaminvoice")
+// const {checkrowcount}= require('./controller/checkrowcount')
+// const {refPay} = requir e('./payment/refPay')
 
 const createRequestId = () => uuid();
 
@@ -52,17 +52,14 @@ server.get(
   getTeamSuccess
 );
 
-//Jalanin Cron Job
-server.get("/valid", validLicense);
-
-//tes fun api
-//server.get('/tes/:tes', refPay)
-
-server.listen(10000, '0.0.0.0', err => {
-  if (err){
-    server.log.error(err);
-    console.log(err);
-    process.exit(1);
-  }
-  server.log.info("Server Started");
-});
+    //tes fun api
+    //server.get('/tes/:tes', refPay)
+    
+    server.listen(10000, '0.0.0.0',(err) => {
+        if(err){
+            server.log.error(err)
+            console.log(err)
+            process.exit(1)
+        }
+        server.log.info('Server Started')
+    })
