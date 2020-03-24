@@ -32,7 +32,7 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "pm2 start src/server.js --watch -f"
+    "start": "forever start src/server.js "
   },
   "description": ""
 }
