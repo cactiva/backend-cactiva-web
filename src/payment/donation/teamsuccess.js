@@ -62,8 +62,7 @@ const getTeamSuccess = async (req, res) =>{
                 insertdatateam(email3, email1, getIdUser, getInvoiceId)
                 insertdatateam(email4, email1, getIdUser, getInvoiceId)
                 insertdatateam(email5, email1, getIdUser, getInvoiceId)
-                location.href = "https://cactiva.netlify.com/profile/"
-                return res.send('Team License Payment Success, go to your profile page')
+                return res.redirect("https://cactiva.netlify.com/profile/")
             }else if( statuses === "PENDING"){
                 return res.send('Payment still Pending')
             }

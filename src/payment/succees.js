@@ -67,8 +67,7 @@ const getSuccess = async (req, res) => {
                 if(referal){
                     refPay(getIdUser)
                 }
-                location.href = "https://cactiva.netlify.com/profile/"
-                return res.send("Payment Success")
+                return res.redirect("https://cactiva.netlify.com/profile/")
             }else if( statuses === "PENDING"){
                 return res.send('Payment still Pending')
             }
