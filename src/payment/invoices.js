@@ -35,13 +35,13 @@ const postInvoice = async (req, res) => {
                 }else if(result.data.status === "PAID"){
                     return res.send("PAID")
                 }else if(result.data.status === "EXPIRED"){
-                    return res.send(createInvoice(timeStamp, email, convert, url))
+                   createInvoice(timeStamp, email, convert, url, res)
                 }
             }).catch(error=>{
                 return res.send(error.result)
             })
         }else{
-            return res.send(createInvoice(timeStamp, email, convert, url))
+            createInvoice(timeStamp, email, convert, url, res)
             }
     }
   } catch (err) {
@@ -49,7 +49,7 @@ const postInvoice = async (req, res) => {
   }
 };
 
-const createInvoice = async (timeStamp, email, convert, urls) => {
+const createInvoice = async (timeStamp, email, convert, urls, res) => {
   await axios({
     method: "POST",
     url: "https://api.xendit.co/v2/invoices",
@@ -67,18 +67,15 @@ const createInvoice = async (timeStamp, email, convert, urls) => {
       description: "Activation Code Payment",
       payment_methods: ["CREDIT_CARD"]
     }
-  })
-    .then(async response => {
+  }).then(async response => {
       const idInvoice = response.data.id;
       await Clientdb.query(
         'UPDATE "UserProfile" Set "invoice_id" = $1 where email = $2',
         [idInvoice, email]
       );
-
-      return response.data.invoice_url;
-    })
-    .catch(err => {
-      return err.response.data;
+      return res.send(response.data.invoice_url);
+    }).catch(err => {
+      return res.send(err.response.data);
     });
 };
 

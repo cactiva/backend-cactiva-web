@@ -34,14 +34,14 @@ const getTeamInvoice = async (req, res) => {
             } else if (result.data.status === "PAID") {
               return res.send("PAID");
             } else if (result.data.status === "EXPIRED") {
-              createInvoice(timeStamp, email1, convert, url);
+              createInvoice(timeStamp, email1, convert, url, res);
             }
           })
           .catch(error => {
             return res.send(error.result);
           });
       } else {
-        createInvoice(timeStamp, email1, convert, url);
+        createInvoice(timeStamp, email1, convert, url, res);
       }
     }
   } catch (err) {
