@@ -3,17 +3,19 @@ const {USER_DOESNT_EXISTS} = require('../models/Errors')
 const jwt = require('jwt-simple')
 const nodeMailer = require("nodemailer")
 
-const transporter = nodeMailer.createTransport("SMTP",{
-    service: "Yandex",
+const transporter = nodeMailer.createTransport({
+    host:'smtp.yandex.com',
+    port: 465,
     auth:{
         user:'official@cactiva.app',
         pass: 'Cactiva123!'
-    }
+    },
+    secure: true
 })
 
 const mailOptions = (email, url) => {
     const mail = {
-        from: 'official@caciva.app',
+        from: 'official@cactiva.app',
         to: email,
         subject: "Reset Password Request",
         text: 'Hi, click this link to reset password ' + url,
