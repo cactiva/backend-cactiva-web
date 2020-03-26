@@ -3,7 +3,7 @@ const {USER_DOESNT_EXISTS} = require('../models/Errors')
 const jwt = require('jwt-simple')
 const nodeMailer = require("nodemailer")
 
-const transporter = nodeMailer.createTransport({
+const transporter = nodeMailer.createTransport("SMTP",{
     service: "Yandex",
     auth:{
         user:'official@cactiva.app',
