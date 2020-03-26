@@ -10,6 +10,8 @@ const {Clientdb} = require('./db/db')
 const {userController} = require("./controller/userController")
 const {getTeamSuccess} = require("./payment/donation/teamsuccess")
 const {getTeamInvoice} = require("./payment/donation/teaminvoice")
+const {sendResetPassword} = require("./controller/requestresetpw")
+const {getNewPassword} = require("./controller/newpassword")
 // const {checkrowcount}= require('./controller/checkrowcount')
 // const {refPay} = requir e('./payment/refPay')
 
@@ -51,6 +53,9 @@ server.get(
   "/invoice/teamsuccess/:email1/:email2/:email3/:email4/:email5",
   getTeamSuccess
 );
+
+server.get("/resetpw/user/:email", sendResetPassword);
+server.post("/newpw/", getNewPassword);
 
     //tes fun api
     //server.get('/tes/:tes', refPay)
