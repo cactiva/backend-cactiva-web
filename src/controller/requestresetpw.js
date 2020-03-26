@@ -4,7 +4,7 @@ const jwt = require('jwt-simple')
 const nodeMailer = require("nodemailer")
 
 const transporter = nodeMailer.createTransport({
-    service: 'yandex',
+    service: "Yandex",
     auth:{
         user:'official@cactiva.app',
         pass: 'Cactiva123!'
@@ -27,7 +27,7 @@ const sendResetPassword = async (req, res) => {
     try{
         const exist = await Clientdb.query('SELECT * FROM "UserProfile" WHERE email = $1',[email])
         if(!exist.rows[0]){
-            res.send(new Error(USER_DOESNT_EXISTS))
+            res.send("Not Exists")
         }
         const iduser = exist.rows[0].id
         const ids = { 
