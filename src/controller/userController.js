@@ -7,17 +7,17 @@ const userController = async (req, res) =>{
     try{
         const user = await Clientdb.query('SELECT * FROM "UserProfile" WHERE email = $1',[email])
         const iduser = user.rows[0].id
+        let inv = user.rows[0].invoice_id
 
         const license = await Clientdb.query('SELECT * FROM "License" WHERE userprofile_id = $1',[iduser])
         const lastrow = license.rowCount - 1
         const checkLastLicense = license.rows[lastrow].type
         if(checkLastLicense === "PRO" ){
-            const inv = license.rows[lastrow].invoice_id
-            check(inv)
+            inv = license.rows[lastrow].invoice_id
+            check(inv, res)
         }else if(checkLastLicense === "PRO-TRIAL"){
-            const inv = user.rows[0].invoice_id
             if(inv != 0){
-                check(inv)
+                check(inv, res)
             }else{
                 return res.send("UNPAID")
             }
