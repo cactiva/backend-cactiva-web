@@ -19,7 +19,7 @@ const userController = async (req, res) =>{
             if(inv === 0){
                 return res.send("UNPAID")
             }else{
-                check(inv)
+                 check(inv)
             }
         }else{
             return res.send("UNPAID")
