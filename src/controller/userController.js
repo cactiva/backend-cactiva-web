@@ -15,7 +15,7 @@ const userController = async (req, res) =>{
             const inv = license.rows[lastrow].invoice_id
             check(inv)
         }else if(checkLastLicense === "PRO-TRIAL"){
-            const inv = user.rows.invoice_id
+            const inv = user.rows[0].invoice_id
             if(inv === 0){
                 check(inv)
             }else{
