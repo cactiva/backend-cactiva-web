@@ -15,7 +15,7 @@ const transporter = nodeMailer.createTransport({
 
 const mailOptions = (email, url) => {
     const mail = {
-        from: 'erlangga@cactiva.app',
+        from: 'Cactiva',
         to: email,
         subject: "Reset Password Request",
         text: 'Hi, click this link to reset password ' + url,
