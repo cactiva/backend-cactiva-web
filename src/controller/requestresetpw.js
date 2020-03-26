@@ -7,7 +7,7 @@ const transporter = nodeMailer.createTransport({
     host:'smtp.yandex.com',
     port: 465,
     auth:{
-        user:'all@cactiva.app',
+        user:'erlangga@cactiva.app',
         pass: 'Cactiva123!'
     },
     secure: true
@@ -15,7 +15,7 @@ const transporter = nodeMailer.createTransport({
 
 const mailOptions = (email, url) => {
     const mail = {
-        from: 'all@cactiva.app',
+        from: 'erlangga@cactiva.app',
         to: email,
         subject: "Reset Password Request",
         text: 'Hi, click this link to reset password ' + url,
