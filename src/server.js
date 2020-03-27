@@ -35,16 +35,6 @@ server.register(require("fastify-cors"), {
   origin: "*"
 });
 
-server.register(require('fastify-nodemailer'), {
-  pool: true,
-  host: 'smtp.yandex.com',
-  port: 465,
-  secure: true, // use TLS
-  auth: {
-    user:'erlangga@cactiva.app',
-    pass: 'Cactiva123!'
-  }
-})
 //API buat Login POST
 server.post("/auth/login/", validatePostLogin, postLogin);
 

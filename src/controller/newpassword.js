@@ -1,5 +1,4 @@
 const { Clientdb } = require('../db/db')
-const {USER_DOESNT_EXISTS} = require('../models/Errors')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt-nodejs')
 
