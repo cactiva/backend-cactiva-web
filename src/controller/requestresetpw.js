@@ -2,17 +2,6 @@ const { Clientdb } = require('../db/db')
 const jwt = require('jsonwebtoken')
 const fastify = require('fastify')()
 
-fastify.register(require('fastify-nodemailer'), {
-    pool: true,
-    host: 'smtp.yandex.com',
-    port: 465,
-    secure: true, // use TLS
-    auth: {
-      user:'erlangga@cactiva.app',
-      pass: 'Cactiva123!'
-    }
-  })
-
 const mailOptions = (email, url) => {
     const mail = {
         from: 'Cactiva <erlangga@cactiva.app>',
@@ -24,6 +13,18 @@ const mailOptions = (email, url) => {
 }
 
 const sendResetPassword = async (req, res, next) => {
+    
+    fastify.register(require('fastify-nodemailer'), {
+        pool: true,
+        host: 'smtp.yandex.com',
+        port: 465,
+        secure: true, // use TLS
+        auth: {
+          user:'erlangga@cactiva.app',
+          pass: 'Cactiva123!'
+        }
+      })
+    
     const { nodemailer } = fastify
     const {email} = req.params
 
@@ -39,7 +40,7 @@ const sendResetPassword = async (req, res, next) => {
         }
         const token = jwt.sign(ids, email, {expiresIn: 3600})
         const url = "https://cactiva.netlify.com/form/resetpassword/?id="+iduser+"&token="+token
-        await fastify.nodemailer.sendMail(mailOptions(email, url), (err, info) =>{
+        fastify.nodemailer.sendMail(mailOptions(email, url), (err, info) =>{
             if (err){
                 next(err)
             }
