@@ -1,6 +1,6 @@
 const { Clientdb } = require('../db/db')
 const {USER_DOESNT_EXISTS} = require('../models/Errors')
-const jwt = require('jwt-simple')
+const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt-nodejs')
 
 const getNewPassword = async (req, res) =>{
@@ -11,7 +11,7 @@ const getNewPassword = async (req, res) =>{
         let payload = jwt.decode(token, user.rows[0].email)
 
         if(!user.rows[0]){
-            res.send(new Error(USER_DOESNT_EXISTS))
+            res.send('User not exist')
         }
         if(payload.id === userId ){
             const tokenPassword = bcrypt.hashSync(password)

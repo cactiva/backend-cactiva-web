@@ -1,6 +1,6 @@
 const { Clientdb } = require('../db/db')
 const {USER_DOESNT_EXISTS} = require('../models/Errors')
-const jwt = require('jwt-simple')
+const jwt = require('jsonwebtoken')
 const nodeMailer = require("nodemailer")
 
 const transporter = nodeMailer.createTransport({
@@ -18,7 +18,7 @@ const mailOptions = (email, url) => {
         from: 'Cactiva <erlangga@cactiva.app>',
         to: email,
         subject: "Reset Password Request",
-        text: 'Hi, click this link to reset password ' + url,
+        text: 'Hi, click this link to reset password, the link will expired in 1 hour ' + url,
     }
     return mail
 }
@@ -36,15 +36,14 @@ const sendResetPassword = async (req, res) => {
             id: iduser,
             email: email
         }
-        const token = jwt.encode(ids, email)
+        const token = jwt.sign(ids, email, {expiresIn: 3600})
         const url = "https://cactiva.netlify.com/form/resetpassword/?id="+iduser+"&token="+token
         transporter.sendMail(mailOptions(email, url), (err, info) =>{
             if (err) {
                 res.send("Error sending email")
               }
-              console.log(`** Email sent **`, info)
         })
-        res.send("Check your email")
+        res.send(token)
     }catch(err){
         res.send(err)
     }
