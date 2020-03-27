@@ -1,20 +1,19 @@
 const { Clientdb } = require('../db/db')
 const jwt = require('jsonwebtoken')
 const fastify = require('fastify')()
-const nodemailer = require('fastify-nodemailer')
+const nodemailer = require('nodemailer')
 
-fastify.register(nodemailer, {
-    pool: true,
-    host: 'smtp.yandex.com',
+let transporter = nodemailer.createTransport({
+    host: "smtp.yandex.com",
     port: 465,
-    secure: true, // use TLS
+    secure: true, // true for 465, false for other ports
     auth: {
-      user:'erlangga@cactiva.app',
-      pass:'Cactiva123!'
+      user: 'erlangga@cactiva.app', // generated ethereal user
+      pass: 'Cactiva123!' // generated ethereal password
     }
-  })
+  });
 
-const sendResetPassword = async (req, res, next) => {
+const sendResetPassword = async (req, res) => {
     const {email} = req.params
 
     try{
@@ -29,18 +28,13 @@ const sendResetPassword = async (req, res, next) => {
         }
         const token = jwt.sign(ids, email, {expiresIn: 3600})
         const url = "https://cactiva.netlify.com/form/resetpassword/?id="+iduser+"&token="+token
-        fastify.nodemailer.sendMail({
+        transporter.sendMail({
             from: 'Cactiva <erlangga@cactiva.app>',
             to: email,
             subject: "Reset Password Request",
             text: 'Hi, click this link to reset password, the link will expired in 1 hour ' + url,
-        }, (err, info) =>{
-            if (err){
-                next(err)
-            }else if(info){
-                res.send("Check your email")
-            }
         })
+        res.send("Check your email")
     }catch(err){
         res.send(err)
     }
