@@ -24,7 +24,7 @@ const mailOptions = (email, url) => {
 }
 
 const sendResetPassword = async (req, res, next) => {
-    let { nodemailer } = fastify
+    const { nodemailer } = fastify
     const {email} = req.params
 
     try{
