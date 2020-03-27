@@ -14,7 +14,7 @@ const mailOptions = (email, url) => {
 }
 
 const sendResetPassword = async (req, res) => {
-    let { nodeMailer } = fastify
+    let { nodemailer } = fastify
     const {email} = req.params
 
     try{
@@ -29,7 +29,7 @@ const sendResetPassword = async (req, res) => {
         }
         const token = jwt.sign(ids, email, {expiresIn: 3600})
         const url = "https://cactiva.netlify.com/form/resetpassword/?id="+iduser+"&token="+token
-        nodeMailer.sendMail(mailOptions(email, url), (err, info) =>{
+        fastify.nodemailer.sendMail(mailOptions(email, url), (err, info) =>{
             if (err) next(err)
             res.send("Check your email")
         })
