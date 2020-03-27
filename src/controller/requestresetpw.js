@@ -40,7 +40,9 @@ const sendResetPassword = async (req, res, next) => {
         const token = jwt.sign(ids, email, {expiresIn: 3600})
         const url = "https://cactiva.netlify.com/form/resetpassword/?id="+iduser+"&token="+token
         await fastify.nodemailer.sendMail(mailOptions(email, url), (err, info) =>{
-            if (err) next(err)
+            if (err){
+                next(err)
+            }
             res.send("Check your email")
         })
     }catch(err){
