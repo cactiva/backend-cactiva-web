@@ -43,7 +43,7 @@ const sendResetPassword = async (req, res) => {
                 res.send("Error sending email")
               }
         })
-        res.send(token)
+        res.send("Check your email")
     }catch(err){
         res.send(err)
     }
