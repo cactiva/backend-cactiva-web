@@ -38,7 +38,7 @@ const sendResetPassword = async (req, res) => {
         }
         const token = jwt.sign(ids, email, {expiresIn: 3600})
         const url = "https://cactiva.netlify.com/form/resetpassword/?id="+iduser+"&token="+token
-        transporter.sendMail(mailOptions(email, url), (err, info) =>{
+        await transporter.sendMail(mailOptions(email, url), (err, info) =>{
             if (err) {
                 res.send("Error sending email")
               }
