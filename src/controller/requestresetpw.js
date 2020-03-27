@@ -1,6 +1,6 @@
 const { Clientdb } = require('../db/db')
 const jwt = require('jsonwebtoken')
-const fastify = require('fastify')
+const fastify = require('fastify')()
 const nodemailer = require('fastify-nodemailer')
 
 fastify.register(nodemailer, {
