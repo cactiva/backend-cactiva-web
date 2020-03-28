@@ -1,6 +1,5 @@
 const { Clientdb } = require('../db/db')
 const jwt = require('jsonwebtoken')
-const fastify = require('fastify')()
 const nodemailer = require('nodemailer')
 
 let transporter = nodemailer.createTransport({
@@ -28,11 +27,11 @@ const sendResetPassword = async (req, res) => {
         }
         const token = jwt.sign(ids, email, {expiresIn: 3600})
         const url = "https://cactiva.netlify.com/form/resetpassword/?id="+iduser+"&token="+token
-        transporter.sendMail({
+        transporter.send({
             from: 'Cactiva <erlangga@cactiva.app>',
             to: email,
             subject: "Reset Password Request",
-            text: 'Hi, click this link to reset password, the link will expired in 1 hour ' + url,
+            text: 'Hi, click this link to reset password, the link will expired in 1 hour ' + url
         })
         res.send("Check your email")
     }catch(err){
