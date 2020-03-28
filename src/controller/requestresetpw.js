@@ -12,7 +12,7 @@ let transporter = nodemailer.createTransport({
     }
   });
 
-const sendResetPassword = async (req, res) => {
+const sendResetPassword = async (req, res, next) => {
     const {email} = req.params
 
     try{
@@ -34,12 +34,15 @@ const sendResetPassword = async (req, res) => {
             text: 'Hi, click this link to reset password, the link will expired in 1 hour ' + url
         }, (err, info) =>{
             if(err){
+                next(err)
                 res.send("Failed")
             }
+            console.log(info.messageId)
             res.send("Check your email")
         })
         
     }catch(err){
+        next(err)
         res.send(err)
     }
 }
