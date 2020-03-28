@@ -32,8 +32,13 @@ const sendResetPassword = async (req, res) => {
             to: email,
             subject: "Reset Password Request",
             text: 'Hi, click this link to reset password, the link will expired in 1 hour ' + url
+        }, (err, info) =>{
+            if(err){
+                res.send("Failed")
+            }
+            res.send("Check your email")
         })
-        res.send("Check your email")
+        
     }catch(err){
         res.send(err)
     }
