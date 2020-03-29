@@ -32,7 +32,7 @@ const sendResetPassword = async (req, res) => {
             from: 'Cactiva <erlangga@cactiva.app>',
             to: email,
             subject: "Reset Password Request",
-            text: 'Hi, click this link to reset password, the link will expired in 1 hour ' + url,
+            text:  'Hi, click this link to reset password, the link will expired in 1 hour ' + url,
         }, (err, info) =>{
             if(err){
                 res.send(err)
