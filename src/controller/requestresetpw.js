@@ -2,17 +2,18 @@ const { Clientdb } = require('../db/db')
 const jwt = require('jsonwebtoken')
 const nodemailer = require('nodemailer')
 
-let transporter = nodemailer.createTransport({
-    host: "smtp.yandex.com",
-    port: 465,
-    secure: true, // true for 465, false for other ports
-    auth: {
-      user: 'erlangga@cactiva.app', // generated ethereal user
-      pass: 'Cactiva123!' // generated ethereal password
-    }
-  });
+const sendResetPassword = async (req, res) => {
+    
+    let transporter = nodemailer.createTransport({
+        host: "smtp.yandex.com",
+        port: 465,
+        secure: true, // true for 465, false for other ports
+        auth: {
+          user: 'erlangga@cactiva.app', // generated ethereal user
+          pass: 'Cactiva123!' // generated ethereal password
+        }
+      });
 
-const sendResetPassword = async (req, res, next) => {
     const {email} = req.params
 
     try{
@@ -31,18 +32,16 @@ const sendResetPassword = async (req, res, next) => {
             from: 'Cactiva <erlangga@cactiva.app>',
             to: email,
             subject: "Reset Password Request",
-            text: 'Hi, click this link to reset password, the link will expired in 1 hour ' + url
+            text: 'Hi, click this link to reset password, the link will expired in 1 hour ' + url,
         }, (err, info) =>{
             if(err){
-                next(err)
-                res.send("Failed")
+                res.send(err)
+            }else{
+                console.log(info)
+                res.send( "Check your email" )
             }
-            console.log(info.messageId)
-            res.send("Check your email")
         })
-        
     }catch(err){
-        next(err)
         res.send(err)
     }
 }
