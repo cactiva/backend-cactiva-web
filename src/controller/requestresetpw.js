@@ -26,15 +26,16 @@ const sendResetPassword = async (req, res) => {
             id: iduser,
             email: email
         }
-        const token = jwt.sign(ids, email, {expiresIn: 3600})
+        const token = jwt.sign(ids, email, {expiresIn: '1d'})
         const url = "https://cactiva.netlify.com/form/resetpassword/?id="+iduser+"&token="+token
         transporter.sendMail({
             from: 'Cactiva <erlangga@cactiva.app>',
             to: email,
             subject: "Reset Password Request",
-            text:  'Hi, click this link to reset password, the link will expired in 1 hour ' + url,
+            text:  "Hi, click this link to reset password, the link will expire in 1 day " + url
         }, (err, info) =>{
             if(err){
+                console.log(err)
                 res.send(err)
             }else{
                 console.log(info)

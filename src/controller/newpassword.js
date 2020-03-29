@@ -17,7 +17,7 @@ const getNewPassword = async (req, res) =>{
             await Clientdb.query('Update "UserProfile" set "password" = $1 where "id" = $2', [tokenPassword, userId])
             res.send('Login with new password')
         }else{
-            res.send('id not match')
+            res.send('Something wrong')
         }
     }catch(err){
         res.send(err)
