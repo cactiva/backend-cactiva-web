@@ -66,8 +66,7 @@ const createInvoice = async (timeStamp, email, convert, urls, res) => {
       amount: convert,
       payer_email: email,
       success_redirect_url: urls,
-      description: "Activation Code Payment",
-      payment_methods: ["CREDIT_CARD"]
+      description: "Activation Code Payment"
     }
   }).then(async response => {
       const idInvoice = response.data.id;
