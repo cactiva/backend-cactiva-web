@@ -16,7 +16,7 @@ const getSuccess = async (req, res) => {
         const getIdUser = getDataId.rows[0].id
 
         let lastrowlicense = ''
-        let statustype = 'EXPIRED'
+        // let statustype = 'EXPIRED'
         const requiredLicense = await Clientdb.query('Select * from "License" where userprofile_id = $1',[getIdUser])
         
         if(requiredLicense){
@@ -24,18 +24,18 @@ const getSuccess = async (req, res) => {
            statustype = requiredLicense.rows[lastrowlicense].status
         }
 
-        let stat = ''
+        let stat = 'ACTIVE'
        
 
-        if(statustype === 'ACTIVE'){
-            stat = 'PENDING'
-        }else if(statustype === 'PENDING'){
-            stat = 'PENDING'
-        }else if(statustype === 'EXPIRED'){
-            stat = 'ACTIVE'
-        }
+        // if(statustype === 'ACTIVE'){
+        //     stat = 'PENDING'
+        // }else if(statustype === 'PENDING'){
+        //     stat = 'PENDING'
+        // }else if(statustype === 'EXPIRED'){
+        //     stat = 'ACTIVE'
+        // }
         
-        if(getInvoiceId === ''){
+        if(getInvoiceId === 0){
             return res.send('Payment Success')
         }
         
