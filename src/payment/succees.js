@@ -51,7 +51,7 @@ const getSuccess = async (req, res) => {
             const statuses = result.data.status
             if( statuses === "SETTLED" || statuses === "PAID"){
                 const types = await Clientdb.query('Insert into "TypeLicense" ("type", "valuetype") values ($1, $2) returning *', ['PRO','1 version'])
-                await Clientdb.query('Insert into "License" ("version", "status", "type", "userprofile_id", "typelicense_id", "invoice_id") values ($1, $2, $3, $4, $5, $6, $7)', [ version, stat,'PRO', getIdUser, types.rows[0].id, getInvoiceId])
+                await Clientdb.query('Insert into "License" ("version", "status", "type", "userprofile_id", "typelicense_id", "invoice_id") values ($1, $2, $3, $4, $5, $6)', [ version, stat, 'PRO', getIdUser, types.rows[0].id, getInvoiceId])
                 await Clientdb.query('UPDATE "UserProfile" Set "invoice_id" = $1, "buy_type" = $2 where "email" = $3',['0', buytype, emailUser])
                 // const referal = await Clientdb.query('SELECT * FROM "Referal" WHERE userprofile_id = $1',[getIdUser])
                 // if(referal){
