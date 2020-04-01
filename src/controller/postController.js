@@ -29,7 +29,7 @@ const postSignup = async (req, res) => {
         //const inputType = await Clientdb.query('Insert into "TypeLicense" ("type", "valuetype") values ($1, $2) returning *', ['Trial','7 days'])
 
         const iduser = inputUser.rows[0].id
-        const idtype = inputType.rows[0].id
+        //const idtype = inputType.rows[0].id
 
         await Clientdb.query('Insert into "CreateTime" ("create_time", "userprofile_id") values ($1, $2)',['', iduser])
         //await Clientdb.query('Insert into "License" ("valid_from", "valid_to", "status", "type", "userprofile_id", "typelicense_id", "invoice_id") values ($1, $2, $3, $4, $5, $6, $7)', [ '', '', 'ACTIVE','PRO-TRIAL', iduser, idtype, ''])
