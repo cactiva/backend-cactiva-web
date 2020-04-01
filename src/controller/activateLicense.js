@@ -1,4 +1,5 @@
-
+const { comparePassword } = require("./postController")
+const { Clientdb } = require('../db/db')
 
 const getActive = async (req, res) =>{
     const {email, password} = req.body
@@ -11,7 +12,7 @@ const getActive = async (req, res) =>{
             res.send('user not exist')
         }
         const getIdUser = user.rows[0].id
-        const isMatch = await comparePassword(password, userPass.rows[0].password)
+        const isMatch = comparePassword(password, userPass.rows[0].password)
         if(isMatch){
             updateLicense(getIdUser, res)
         }else{

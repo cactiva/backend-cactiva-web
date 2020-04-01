@@ -100,5 +100,6 @@ const comparePassword = (candidatePassword, passwordmore) => {
 
 module.exports = {
     postLogin,
-    postSignup
+    postSignup,
+    comparePassword
 }
