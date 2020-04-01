@@ -5,10 +5,10 @@ const timeStamp = Math.floor(Date.now() / 1000);
 
 const postInvoice = async (req, res) => {
     
-    const { email, pay, version, buytype} = req.body
+    const { email, pay, buytype} = req.body
     const user = await Clientdb.query('SELECT * FROM "UserProfile" WHERE email = $1',[email])
     const convert = pay * 17000
-    const url = 'https://cactiva-web.web.andromedia.co.id/invoice/success/'+email+'/'+version+'/'+buytype
+    const url = 'https://cactiva-web.web.andromedia.co.id/invoice/success/'+email+'/'+buytype
     
     try{
         

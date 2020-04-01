@@ -6,7 +6,7 @@ class SignInResponse {
   
   class SignUpResponse {
     constructor({
-      token, refreshToken, expiresIn, email, id, message, firstName, lastName,  gender, phone, address
+      token, refreshToken, expiresIn, email, id, message, firstName, lastName,  gender, phone, address, buy_type
     }) {
       this.token = token;
       this.refreshToken = refreshToken;
@@ -19,6 +19,7 @@ class SignInResponse {
       this.phone = phone;
       this.address = address
       this.message = message;
+      this.buy_type = buy_type;
     }
   }
   

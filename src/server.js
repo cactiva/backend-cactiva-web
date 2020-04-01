@@ -12,6 +12,7 @@ const {getTeamSuccess} = require("./payment/donation/teamsuccess")
 const {getTeamInvoice} = require("./payment/donation/teaminvoice")
 const {sendResetPassword} = require("./controller/requestresetpw")
 const {getNewPassword} = require("./controller/newpassword")
+const {getActive} = require("./controller/activateLicense")
 // const {checkrowcount}= require('./controller/checkrowcount')
 // const {refPay} = requir e('./payment/refPay')
 
@@ -48,7 +49,7 @@ server.post("/invoices/teaminvoice/", getTeamInvoice);
 server.post("/checkpayment/", userController);
 
 //API buat Pembayaran sukses GET PARAMs
-server.get("/invoice/success/:emailUser/:version/:buytype", getSuccess);
+server.get("/invoice/success/:emailUser/:buytype", getSuccess);
 server.get(
   "/invoice/teamsuccess/:email1/:email2/:email3/:email4/:email5",
   getTeamSuccess
@@ -56,6 +57,8 @@ server.get(
 
 server.get("/resetpw/user/:email", sendResetPassword);
 server.post("/newpw/", getNewPassword);
+
+server.post("/activate/", getActive);
 
     //tes fun api
     //server.get('/tes/:tes', refPay)

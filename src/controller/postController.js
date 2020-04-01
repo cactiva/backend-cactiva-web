@@ -47,7 +47,8 @@ const postSignup = async (req, res) => {
             lastName: lastName, 
             gender: gender,
             phone: phone,
-            address: address}))
+            address: address,
+            buy_type: ''}))
     }catch(err){
         res.send(err)
     }
@@ -68,6 +69,7 @@ const postLogin = async (req, res) => {
             const gender = user.rows[0].gender
             const phone = user.rows[0].phone
             const address = user.rows[0].address
+            const buy_type = user.rows[0].buy_type
             //return login sukses
             const token = await res.jwtSign({ expiresIn: '2d'})
             return res.send(new SignUpResponse({
@@ -77,7 +79,9 @@ const postLogin = async (req, res) => {
                 lastName: lastName,
                 gender: gender,
                 phone: phone,
-                address: address}))
+                address: address,
+                buy_type: buy_type
+                }))
         }
         return res.send(new Error(INVALID_PASSWORD))
     }catch(err){
