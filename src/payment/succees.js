@@ -14,13 +14,13 @@ const getSuccess = async (req, res) => {
         const getInvoiceId = getDataId.rows[0].invoice_id
         const getIdUser = getDataId.rows[0].id
         
-        let lastrowlicense = ''
-        let statustype = 'EXPIRED'
-        const requiredLicense = await Clientdb.query('Select * from "License" where userprofile_id = $1',[getIdUser])
-        if(requiredLicense){
-            lastrowlicense = requiredLicense.rowCount - 1
-            statustype = requiredLicense.rows[lastrowlicense].status
-        }
+        // let lastrowlicense = ''
+        // let statustype = 'EXPIRED'
+        // const requiredLicense = await Clientdb.query('Select * from "License" where userprofile_id = $1',[getIdUser])
+        // if(requiredLicense){
+        //     lastrowlicense = requiredLicense.rowCount - 1
+        //     statustype = requiredLicense.rows[lastrowlicense].status
+        // }
         
         // let stat = ''
 
