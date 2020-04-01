@@ -48,7 +48,7 @@ server.post("/invoices/teaminvoice/", getTeamInvoice);
 server.post("/checkpayment/", userController);
 
 //API buat Pembayaran sukses GET PARAMs
-server.get("/invoice/success/:emailUser", getSuccess);
+server.get("/invoice/success/:emailUser/:version/:buytype", getSuccess);
 server.get(
   "/invoice/teamsuccess/:email1/:email2/:email3/:email4/:email5",
   getTeamSuccess
