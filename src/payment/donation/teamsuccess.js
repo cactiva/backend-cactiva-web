@@ -10,10 +10,17 @@ const getTeamSuccess = async (req, res) =>{
         const getInvoiceId = getDataId.rows[0].invoice_id
         const getIdUser = getDataId.rows[0].id
 
+        let lastrowlicense = ''
+        let getDeadLine = ''
+        let statustype = 'EXPIRED'
         const requiredLicense = await Clientdb.query('Select * from "License" where userprofile_id = $1',[getIdUser])
-        const lastrowlicense = requiredLicense.rowCount - 1
-        const getDeadLine = requiredLicense.rows[lastrowlicense].valid_to
-        const statustype = requiredLicense.rows[lastrowlicense].status
+        
+        if(requiredLicense){
+           lastrowlicense = requiredLicense.rowCount - 1
+           getDeadLine = requiredLicense.rows[lastrowlicense].valid_to
+           statustype = requiredLicense.rows[lastrowlicense].status
+        }
+        
         let stat = ''
         let getDateNow = ''
         let setDateThen = ''
