@@ -7,7 +7,7 @@ const getNewPassword = async (req, res) =>{
 
     try{
         const user = await Clientdb.query('SELECT * FROM "UserProfile" WHERE id = $1',[userId])
-        let payload = jwt.decode(token, user.rows[0].email)
+        let payload = jwt.verify(token, user.rows[0].email)
 
         if(!user.rows[0]){
             res.send('User not exist')
