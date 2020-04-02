@@ -20,6 +20,9 @@ const getNewPassword = async (req, res) =>{
             res.send('Something wrong')
         }
     }catch(err){
+        if(err.message === "jwt expired"){
+            res.send("Link expired")
+        }
         res.send(err)
     }
 }
