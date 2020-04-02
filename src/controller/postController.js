@@ -6,7 +6,7 @@ const { checkrowcount } = require('../checkrowcount')
 const {INVALID_PASSWORD, USER_DOESNT_EXISTS, USER_EXISTS} = require('../models/Errors')
 
 const postSignup = async (req, res) => {
-    const {firstName, lastName,  email, password, gender, phone, address, idref,token} = req.body
+    const {firstName, lastName,  email, password, gender, phone, address, token, idref} = req.body
     
     try{
         const exist = await Clientdb.query('SELECT email FROM "UserProfile" WHERE email = $1',[email])
@@ -40,10 +40,10 @@ const postSignup = async (req, res) => {
         //      checkrowcount(checkId.rows[0].id)
         //     }
         // }
+
         refLicense(idref, token, iduser, getDateNow)
-        const token = await res.jwtSign({expiresIn: '2d'})
+        //const tokens = await res.jwtSign({expiresIn: '2d'})
         res.send(new SignUpResponse({email: email, 
-            token, 
             firstName: firstName, 
             lastName: lastName, 
             gender: gender,
@@ -72,10 +72,9 @@ const postLogin = async (req, res) => {
             const address = user.rows[0].address
             const buy_type = user.rows[0].buy_type
             //return login sukses
-            const token = await res.jwtSign({ expiresIn: '2d'})
+            //const token = await res.jwtSign({ expiresIn: '2d'})
             return res.send(new SignUpResponse({
                 email: email,
-                token,
                 firstName: firstName,
                 lastName: lastName,
                 gender: gender,
