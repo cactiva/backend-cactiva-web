@@ -1,12 +1,12 @@
 const bcrypt = require('bcrypt-nodejs')
-
+const jwt = require('jsonwebtoken')
 const { Clientdb } = require('../db/db')
 const {SignUpResponse} = require('../models/AuthA')
 const { checkrowcount } = require('../checkrowcount')
 const {INVALID_PASSWORD, USER_DOESNT_EXISTS, USER_EXISTS} = require('../models/Errors')
 
 const postSignup = async (req, res) => {
-    const {firstName, lastName,  email, password, gender, phone, address, emailreferal} = req.body
+    const {firstName, lastName,  email, password, gender, phone, address, idref,token} = req.body
     
     try{
         const exist = await Clientdb.query('SELECT email FROM "UserProfile" WHERE email = $1',[email])
@@ -16,8 +16,8 @@ const postSignup = async (req, res) => {
         const date_ob = new Date()
         
         const getDateNow = date_ob.toLocaleDateString()
-        date_ob.setDate(date_ob.getDate() + 7)
-        const setDateThen = date_ob.toLocaleDateString()
+        //date_ob.setDate(date_ob.getDate() + 7)
+        //const setDateThen = date_ob.toLocaleDateString()
         
         if(existListEmail){
             res.code(400)
@@ -33,13 +33,14 @@ const postSignup = async (req, res) => {
 
         await Clientdb.query('Insert into "CreateTime" ("create_time", "userprofile_id") values ($1, $2)',['', iduser])
         //await Clientdb.query('Insert into "License" ("valid_from", "valid_to", "status", "type", "userprofile_id", "typelicense_id", "invoice_id") values ($1, $2, $3, $4, $5, $6, $7)', [ '', '', 'ACTIVE','PRO-TRIAL', iduser, idtype, ''])
-        if(emailreferal){
-            const checkId = await Clientdb.query('Select * from "UserProfile" where email = $1',[emailreferal])
-            if(checkId){
-             await Clientdb.query('INSERT INTO "Referal" ("userprofile_id", "referal_user_id", "create_at") VALUES ($1, $2, $3)',[parseInt(iduser), parseInt(checkId.rows[0].id), getDateNow])
-             checkrowcount(checkId.rows[0].id)
-            }
-        }
+        // if(emailreferal){
+        //     const checkId = await Clientdb.query('Select * from "UserProfile" where email = $1',[emailreferal])
+        //     if(checkId){
+        //      await Clientdb.query('INSERT INTO "Referal" ("userprofile_id", "referal_user_id", "create_at") VALUES ($1, $2, $3)',[parseInt(iduser), parseInt(checkId.rows[0].id), getDateNow])
+        //      checkrowcount(checkId.rows[0].id)
+        //     }
+        // }
+        refLicense(idref, token, iduser, getDateNow)
         const token = await res.jwtSign({expiresIn: '2d'})
         res.send(new SignUpResponse({email: email, 
             token, 
@@ -97,6 +98,25 @@ const comparePassword = (candidatePassword, passwordmore) => {
     }
 }
 
+const refLicense = async (idref, token, iduser, dateNow) =>{
+
+    if(idref !== ''){
+        if(token !== ''){
+            const user = await Clientdb.query('SELECT * FROM "UserProfile" WHERE id = $1',[idref])
+            const payload = jwt.verify(token, 'supersecret')
+            if(!user.rows[0]){
+                res.send('User not exist')
+            }
+            if(payload.id === idref ){
+                const types = await Clientdb.query('Insert into "TypeLicense" ("type", "valuetype") values ($1, $2) returning *', ['PRO','1 year'])
+                await Clientdb.query('Insert into "License" ("valid_from", "status", "type", "userprofile_id", "typelicense_id", "invoice_id", "valid_to") values ($1, $2, $3, $4, $5, $6, $7)', [ '', 'PENDING', 'PRO', iduser, types.rows[0].id, payload.invoice_id,''])
+                await Clientdb.query('INSERT INTO "Referal" ("userprofile_id", "referal_user_id", "create_at") VALUES ($1, $2, $3)',[iduser, idref, dateNow])
+            }else{
+                res.send('Something wrong')
+            }
+        }
+    }
+}
 
 module.exports = {
     postLogin,
