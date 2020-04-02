@@ -8,7 +8,7 @@ const postInvoice = async (req, res) => {
     const { email, pay, buytype} = req.body
     const user = await Clientdb.query('SELECT * FROM "UserProfile" WHERE email = $1',[email])
     const convert = pay * 17000
-    const url = 'https://cactiva-web.web.andromedia.co.id/invoice/success/'+email+'/'+buytype
+    const url = 'https://cactiva.netlify.com/form/success/?email='+email+'&buytype='+buytype
     
     try{
         
