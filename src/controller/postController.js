@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt-nodejs')
 const jwt = require('jsonwebtoken')
+const nodemailer = require('nodemailer')
 const { Clientdb } = require('../db/db')
 const {SignUpResponse} = require('../models/AuthA')
 const { checkrowcount } = require('../checkrowcount')
@@ -8,6 +9,16 @@ const {INVALID_PASSWORD, USER_DOESNT_EXISTS, USER_EXISTS} = require('../models/E
 const postSignup = async (req, res) => {
     const {firstName, lastName,  email, password, gender, phone, address, token, idref} = req.body
     
+    let transporter = nodemailer.createTransport({
+        host: "smtp.yandex.com",
+        port: 465,
+        secure: true, 
+        auth: {
+          user: 'erlangga@cactiva.app', 
+          pass: 'Cactiva123!' 
+        }
+      });
+
     try{
         const exist = await Clientdb.query('SELECT email FROM "UserProfile" WHERE email = $1',[email])
         
@@ -16,8 +27,6 @@ const postSignup = async (req, res) => {
         const date_ob = new Date()
         
         const getDateNow = date_ob.toLocaleDateString()
-        //date_ob.setDate(date_ob.getDate() + 7)
-        //const setDateThen = date_ob.toLocaleDateString()
         
         if(existListEmail){
             res.code(400)
@@ -43,13 +52,28 @@ const postSignup = async (req, res) => {
 
         refLicense(idref, token, iduser, getDateNow)
         //const tokens = await res.jwtSign({expiresIn: '2d'})
-        res.send(new SignUpResponse({email: email, 
-            firstName: firstName, 
-            lastName: lastName, 
-            gender: gender,
-            phone: phone,
-            address: address,
-            buy_type: ''}))
+        const ids = {
+            id: iduser,
+        }
+        const tokenverified = jwt.sign(ids, email)
+        const url = "http://cactiva.netlify.com/form/verify/?id="+iduser+"&token="+tokenverified
+        transporter.sendMail({
+            from: 'Cactiva <erlangga@cactiva.app>',
+            to: email,
+            subject: "Email Verification",
+            text:  "Hi, click this link for verification, don't give it to anyone " + url
+        }, (err, info) =>{
+            if(err){
+                console.log(err)
+                res.send(err)
+            }else{
+                console.log(info)
+                res.send(new SignUpResponse({
+                    message: 'Check your email',
+                    token: tokenverified
+                }))
+            }
+        })
     }catch(err){
         res.send(err)
     }
@@ -71,6 +95,7 @@ const postLogin = async (req, res) => {
             const phone = user.rows[0].phone
             const address = user.rows[0].address
             const buy_type = user.rows[0].buy_type
+            const verified = user.rows[0].verified
             //return login sukses
             //const token = await res.jwtSign({ expiresIn: '2d'})
             return res.send(new SignUpResponse({
@@ -80,7 +105,8 @@ const postLogin = async (req, res) => {
                 gender: gender,
                 phone: phone,
                 address: address,
-                buy_type: buy_type
+                buy_type: buy_type,
+                verified: verified
                 }))
         }
         return res.send(new Error(INVALID_PASSWORD))

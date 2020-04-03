@@ -14,6 +14,7 @@ const {sendResetPassword} = require("./controller/requestresetpw")
 const {getNewPassword} = require("./controller/newpassword")
 const {getActive} = require("./controller/activateLicense")
 const {getUpdate} = require("./controller/updateController")
+const {getVerified} = require("./controller/requestverified")
 // const {checkrowcount}= require('./controller/checkrowcount')
 // const {refPay} = requir e('./payment/refPay')
 
@@ -60,7 +61,8 @@ server.get("/resetpw/user/:email", sendResetPassword);
 server.post("/newpw/", getNewPassword);
 
 server.post("/activate/", getActive);
-server.post("/update/user/", getUpdate)
+server.post("/update/user/", getUpdate);
+server.post("/verified/user", getVerified);
 
     //tes fun api
     //server.get('/tes/:tes', refPay)

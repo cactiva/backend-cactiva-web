@@ -77,7 +77,7 @@ const linkreferal = async (id, inv) =>{
         id: id,
         invoice_id: inv
     }
-    const token = jwt.sign(ids, 'supersecret', {mutatePayload: true, algorithm: 'RS512'})
+    const token = jwt.sign(ids, 'supersecret', {mutatePayload: true})
     const url = "https://cactiva.netlify.com/form/?id="+id+"&token="+token
     await Clientdb.query('INSERT into "LinkReferal"("userprofile_id", "link") values($1, $2)',[id, url])
 }
