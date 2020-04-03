@@ -11,7 +11,7 @@ const getVerified = async (req, res) =>{
         if(!user.rows[0]){
             res.send('User not exist')
         }
-        if(payload.id === userId ){
+        if(payload.id === id ){
             const isMatch = comparePassword(password, user.rows[0].password)
             if(isMatch){
                 const userupdate = await Clientdb.query('UPDATE "UserProfile" Set "verified" = $1 where "email" = $2 returning *' ,['verified', email])
