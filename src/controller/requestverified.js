@@ -40,6 +40,10 @@ const getVerified = async (req, res) =>{
                     buy_type: buy_type,
                     verified: verified
                 }))
+            }else{
+                res.send(new SignUpResponse({
+                    message: 'Wrong Password'
+                }))
             }
         }else{
             res.send(new SignUpResponse({
