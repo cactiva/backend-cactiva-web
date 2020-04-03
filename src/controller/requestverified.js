@@ -35,7 +35,9 @@ const getVerified = async (req, res) =>{
                 }))
             }
         }else{
-            res.send(new SignUpResponse({message: 'Something Wrong'}))
+            res.send(new SignUpResponse({
+                message: 'Something Wrong',
+                id: payload.id}))
         }
     }catch(err){
         res.send(err)
