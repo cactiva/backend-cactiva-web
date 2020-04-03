@@ -9,7 +9,14 @@ const getVerified = async (req, res) =>{
         const user = await Clientdb.query('SELECT * FROM "UserProfile" WHERE id = $1',[id])
         let payload = jwt.verify(token, user.rows[0].email)
         if(!user.rows[0]){
-            res.send('User not exist')
+            res.send(new SignUpResponse({
+                message: 'User Not Exist'
+            }))
+        }
+        if(!user.rows[0].email === email){
+            res.send(new SignUpResponse({
+                message: 'User Not Exist'
+            }))
         }
         if(payload.id === id ){
             const isMatch = comparePassword(password, user.rows[0].password)
