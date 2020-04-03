@@ -62,7 +62,7 @@ server.post("/newpw/", getNewPassword);
 
 server.post("/activate/", getActive);
 server.post("/update/user/", getUpdate);
-server.post("/verified/user", getVerified);
+server.post("/verified/user/", getVerified);
 
     //tes fun api
     //server.get('/tes/:tes', refPay)
