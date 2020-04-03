@@ -57,23 +57,27 @@ const postSignup = async (req, res) => {
         }
         const tokenverified = jwt.sign(ids, email)
         const url = "http://cactiva.netlify.com/form/verify/?id="+iduser+"&token="+tokenverified
-        transporter.sendMail({
-            from: 'Cactiva <erlangga@cactiva.app>',
-            to: email,
-            subject: "Email Verification",
-            text:  "Hi, click this link for verification, don't give it to anyone " + url
-        }, (err, info) =>{
-            if(err){
-                console.log(err)
-                res.send(err)
-            }else{
-                console.log(info)
-                res.send(new SignUpResponse({
-                    message: 'Check your email',
-                    token: tokenverified
-                }))
-            }
-        })
+        // transporter.sendMail({
+        //     from: 'Cactiva <erlangga@cactiva.app>',
+        //     to: email,
+        //     subject: "Email Verification",
+        //     text:  "Hi, click this link for verification, don't give it to anyone " + url
+        // }, (err, info) =>{
+        //     if(err){
+        //         console.log(err)
+        //         res.send(err)
+        //     }else{
+        //         console.log(info)
+        //         res.send(new SignUpResponse({
+        //             message: 'Check your email',
+        //             token: tokenverified
+        //         }))
+        //     }
+        // })
+        res.send(new SignUpResponse({
+            message: 'Check your email',
+            token: tokenverified
+        }))
     }catch(err){
         res.send(err)
     }
