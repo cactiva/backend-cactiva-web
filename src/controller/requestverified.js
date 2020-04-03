@@ -1,18 +1,18 @@
 const { Clientdb } = require('../db/db')
 const jwt = require('jsonwebtoken')
 const {comparePassword} = require("./postController")
-const {SignUpResponse} = require('../models/AuthA')
+const { SignUpResponse } = require('../models/AuthA')
 
 const getVerified = async (req, res) =>{
     const {id, token, email, password} = req.body
     try{
         const user = await Clientdb.query('SELECT * FROM "UserProfile" WHERE id = $1',[id])
-        let payload = jwt.verify(token, user.rows[0].email)
         if(!user.rows[0]){
             res.send(new SignUpResponse({
                 message: 'User Not Exist'
             }))
         }
+        let payload = jwt.verify(token, user.rows[0].email)
         if(!user.rows[0].email === email){
             res.send(new SignUpResponse({
                 message: 'User Not Exist'
