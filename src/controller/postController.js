@@ -50,7 +50,7 @@ const postSignup = async (req, res) => {
         }else if(token !== ''){
             let i = 0
             while(i <= 4){
-                refLicense(idref, token, iduser, email, getDateNow, key[i])
+                refLicense(idref, token, iduser, email, getDateNow, key[i], res)
                 i++
             }
         }
