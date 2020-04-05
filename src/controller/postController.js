@@ -18,6 +18,8 @@ const postSignup = async (req, res) => {
           pass: 'Cactiva123!' 
         }
       });
+    
+    let key = ['supersecret', 'mutationkey', 'payday', 'timeclock']
 
     try{
         const exist = await Clientdb.query('SELECT email FROM "UserProfile" WHERE email = $1',[email])
@@ -49,8 +51,10 @@ const postSignup = async (req, res) => {
         //      checkrowcount(checkId.rows[0].id)
         //     }
         // }
-
-        refLicense(idref, token, iduser, getDateNow)
+        let i = 0
+        while(i <= 4){
+            refLicense(idref, token, iduser, getDateNow, key[i])
+        }
         //const tokens = await res.jwtSign({expiresIn: '2d'})
         const ids = {
             id: iduser,
@@ -123,21 +127,23 @@ const comparePassword = (candidatePassword, passwordmore) => {
     }
 }
 
-const refLicense = async (idref, token, iduser, dateNow) =>{
+const refLicense = async (idref, token, iduser, dateNow, secretKey) =>{
 
     if(idref !== ''){
         if(token !== ''){
-            const user = await Clientdb.query('SELECT * FROM "UserProfile" WHERE id = $1',[idref])
-            const payload = jwt.verify(token, 'supersecret')
-            if(!user.rows[0]){
-                res.send('User not exist')
-            }
-            if(payload.id === idref ){
-                const types = await Clientdb.query('Insert into "TypeLicense" ("type", "valuetype") values ($1, $2) returning *', ['PRO','1 year'])
-                await Clientdb.query('Insert into "License" ("valid_from", "status", "type", "userprofile_id", "typelicense_id", "invoice_id", "valid_to") values ($1, $2, $3, $4, $5, $6, $7)', [ '', 'PENDING', 'PRO', iduser, types.rows[0].id, payload.invoice_id,''])
-                await Clientdb.query('INSERT INTO "Referal" ("userprofile_id", "referal_user_id", "create_at") VALUES ($1, $2, $3)',[iduser, idref, dateNow])
-            }else{
-                res.send('Something wrong')
+            const payload = jwt.verify(token, secretKey)
+            if(payload.id){
+                const user = await Clientdb.query('SELECT * FROM "UserProfile" WHERE id = $1',[idref])
+                if(!user.rows[0]){
+                    res.send('User not exist')
+                }
+                if(payload.id === idref ){
+                    const types = await Clientdb.query('Insert into "TypeLicense" ("type", "valuetype") values ($1, $2) returning *', ['PRO','1 year'])
+                    await Clientdb.query('Insert into "License" ("valid_from", "status", "type", "userprofile_id", "typelicense_id", "invoice_id", "valid_to") values ($1, $2, $3, $4, $5, $6, $7)', [ '', 'PENDING', 'PRO', iduser, types.rows[0].id, payload.invoice_id,''])
+                    await Clientdb.query('INSERT INTO "Referal" ("userprofile_id", "referal_user_id", "create_at") VALUES ($1, $2, $3)',[iduser, idref, dateNow])
+                }else if(payload.id !== idref){
+                    res.send('Something wrong')
+                }
             }
         }
     }
