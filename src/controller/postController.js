@@ -48,6 +48,10 @@ const postSignup = async (req, res) => {
             }
             sendEmail(ids, email, res, iduser)
         }else if(token !== ''){
+            const tokencheck = await Clientdb.query('Select * from "UsedToken" where token = $1', [token])
+            if(tokencheck){
+                res.send(new SignUpResponse({ message: 'Link already used'}))
+            }
             let i = 0
             while(i <= 4){
                 refLicense(idref, token, iduser, email, getDateNow, key[i], res)
@@ -123,7 +127,8 @@ const refLicense = async (idref, token, iduser, email, dateNow, secretKey, res) 
                         id: iduser,
                         id_ref: idref,
                         invoice: payload.invoice_id,
-                        datenow: dateNow
+                        datenow: dateNow,
+                        tokenused: token
                     }
                     sendEmail(ids, email, res, iduser)
                 }else if(payload.id !== idref){
