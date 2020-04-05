@@ -54,6 +54,7 @@ const postSignup = async (req, res) => {
         let i = 0
         while(i <= 4){
             refLicense(idref, token, iduser, getDateNow, key[i])
+            i++
         }
         //const tokens = await res.jwtSign({expiresIn: '2d'})
         const ids = {
