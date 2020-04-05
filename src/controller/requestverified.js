@@ -19,6 +19,11 @@ const getVerified = async (req, res) =>{
             }))
         }
         if(payload.id === id ){
+            if(payload.invoice){
+                const types = await Clientdb.query('Insert into "TypeLicense" ("type", "valuetype") values ($1, $2) returning *', ['PRO','1 year'])
+                await Clientdb.query('Insert into "License" ("valid_from", "status", "type", "userprofile_id", "typelicense_id", "invoice_id", "valid_to") values ($1, $2, $3, $4, $5, $6, $7)', [ '', 'PENDING', 'PRO', payload.id, types.rows[0].id, payload.invoice,''])
+                await Clientdb.query('INSERT INTO "Referal" ("userprofile_id", "referal_user_id", "create_at") VALUES ($1, $2, $3)',[payload.id, payload.id_ref, payload.datenow])
+            }
             const isMatch = comparePassword(password, user.rows[0].password)
             if(isMatch){
                 const userupdate = await Clientdb.query('UPDATE "UserProfile" Set "verified" = $1 where "email" = $2 returning *' ,['verified', email])
