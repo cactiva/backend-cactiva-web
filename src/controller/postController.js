@@ -50,6 +50,7 @@ const postSignup = async (req, res) => {
         }else if(token !== ''){
             const tokencheck = await Clientdb.query('Select * from "UsedToken" where token = $1', [token])
             if(tokencheck){
+                await Clientdb.query('Delete from "UserProfile" where "id" = $1',[iduser])
                 res.send(new SignUpResponse({ message: 'Link already used'}))
             }
             let i = 0
