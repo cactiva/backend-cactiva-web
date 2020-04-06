@@ -56,6 +56,7 @@ const getSuccess = async (req, res) => {
                     linkreferal(getIdUser, getInvoiceId, 'mutationkey')
                     linkreferal(getIdUser, getInvoiceId, 'payday')
                     linkreferal(getIdUser, getInvoiceId, 'timeclock')
+                    sendEmail(getIdUser)
                 }
                 // const referal = await Clientdb.query('SELECT * FROM "Referal" WHERE userprofile_id = $1',[getIdUser])
                 // if(referal){
@@ -80,6 +81,38 @@ const linkreferal = async (id, inv, secretKey) =>{
     const token = jwt.sign(ids, secretKey, {mutatePayload: true})
     const url = "https://cactiva.netlify.com/form/?id="+id+"&token="+token
     await Clientdb.query('INSERT into "LinkReferal"("userprofile_id", "link") values($1, $2)',[id, url])
+}
+
+const sendEmail = async (id) =>{
+    let transporter = nodemailer.createTransport({
+        host: "smtp.yandex.com",
+        port: 465,
+        secure: true, 
+        auth: {
+          user: 'erlangga@cactiva.app', 
+          pass: 'Cactiva123!' 
+        }
+      });
+
+        const linkreferal = await Clientdb.query('Select * from "LinkReferal" where "userprofile_id" = $1',[id])
+        let list = linkreferal.rowCount - 1
+        transporter.sendMail({
+            from: 'Cactiva <erlangga@cactiva.app>',
+            to: email,
+            subject: "Payment Success for Team License ",
+            text:  "Thanks for your support, send this link to your partner and register from it. Remember, one link for one user. \n 2nd user: " + linkreferal.rows[list].link +"\n 3rd user: "+ linkreferal.rows[list-1].link +"\n 4th user :"+ linkreferal.rows[list-2].link +"\n 5th user:"+ linkreferal.rows[list-3].link
+        }, (err, info) =>{
+            if(err){
+                console.log(err)
+                res.send(err)
+            }else{
+                console.log(info)
+                res.send(new SignUpResponse({
+                    message: 'Check your email',
+                    token: tokenverified
+                }))
+            }
+        })
 }
 
 module.exports = {
