@@ -101,7 +101,7 @@ const sendEmail = async (id, email) =>{
             from: 'Cactiva <erlangga@cactiva.app>',
             to: email,
             subject: "Payment Success for Team License ",
-            text:  "Thanks for your support, send this link to your partner and register from it. Remember, one link for one user. \n 2nd user: " + linkreferal.rows[list].link +"\n 3rd user: "+ linkreferal.rows[list-1].link +"\n 4th user: "+ linkreferal.rows[list-2].link +"\n 5th user: "+ linkreferal.rows[list-3].link
+            text:  "Thanks for your support, send this link to your partner and register from it. Remember, one link for one user. \n\n 2nd user: " + linkreferal.rows[list].link +"\n\n 3rd user: "+ linkreferal.rows[list-1].link +"\n\n 4th user: "+ linkreferal.rows[list-2].link +"\n\n 5th user: "+ linkreferal.rows[list-3].link
         }, (err, info) =>{
             if(err){
                 console.log(err)
