@@ -13,7 +13,7 @@
   },
   "homepage": "https://github.com/cactiva/backend-cactiva-web#readme",
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bcrypt-node": "^0.1.0",
     "bcrypt-nodejs": "^0.0.3",
     "caprover": "^2.1.1",
